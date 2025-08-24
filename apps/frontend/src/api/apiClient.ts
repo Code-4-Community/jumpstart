@@ -11,7 +11,8 @@ export class ApiClient {
   }
 
   public async getHello(): Promise<string> {
-    return this.get('/api') as Promise<string>;
+    const response = await this.get('/api');
+    return response as string;
   }
 
   private async get(path: string): Promise<unknown> {
@@ -32,6 +33,15 @@ export class ApiClient {
 
   private async delete(path: string): Promise<unknown> {
     return this.axiosInstance.delete(path).then((response) => response.data);
+  }
+
+  public async getTasks(): Promise<string[]> {
+    const response = await this.get('/api/tasks/task');
+    return response as string[];
+  }
+
+  public async updateTaskCategory(id: number, body: unknown): Promise<string> {
+    return this.patch(`/api/tasks/${id}/category`, body) as Promise<string>;
   }
 }
 
