@@ -34,8 +34,8 @@ export class TasksController {
   }
 
   /**
-   * Edits a task by its ID.
-   * @param id The ID of the task to edit.
+   * Updates a task by its ID.
+   * @param id The ID of the task to update.
    * @param updateTaskDto The data to update the task.
    * @returns The updated task.
    * @throws BadRequestException if the task with the given ID does not exist.
@@ -49,7 +49,7 @@ export class TasksController {
     return this.tasksService.updateTask(id, updateTaskDto);
   }
 
-  /** Retrieves all tasks.
+  /** Get all tasks.
    * @returns An array of all tasks.
    */
   @Get('/')
@@ -76,7 +76,7 @@ export class TasksController {
   }
 
   /**
-   * Move task category by its ID.
+   * Update a task category by its ID.
    * @param id The ID of the task to move.
    * @param newCategory The new category to move the task to.
    * @returns The updated task.
