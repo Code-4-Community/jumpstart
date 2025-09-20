@@ -12,8 +12,8 @@ interface CreateEditTaskProps {
   taskId?: number;
   defaultCategory?: TaskCategory;
   handleCancel: () => void;
-  onTaskSaved?: () => void;
-  isEditing?: boolean;
+  onTaskSaved: () => void;
+  isEditing: boolean;
 }
 
 export const CreateEditTask: React.FC<CreateEditTaskProps> = ({
@@ -21,7 +21,7 @@ export const CreateEditTask: React.FC<CreateEditTaskProps> = ({
   defaultCategory,
   handleCancel,
   onTaskSaved,
-  isEditing = false,
+  isEditing,
 }) => {
   const [task, setTask] = useState<Task>();
   const [title, setTitle] = useState('');
@@ -70,9 +70,7 @@ export const CreateEditTask: React.FC<CreateEditTaskProps> = ({
 
     try {
       await apiClient.deleteTask(taskId);
-      if (onTaskSaved) {
-        onTaskSaved();
-      }
+      onTaskSaved();
       console.log('Successfully deleted task with id:', taskId);
     } catch (error) {
       console.error('Error deleting task:', error);
@@ -140,9 +138,7 @@ export const CreateEditTask: React.FC<CreateEditTaskProps> = ({
         }
       }
 
-      if (onTaskSaved) {
-        onTaskSaved();
-      }
+      onTaskSaved();
     } catch (error) {
       console.error('Error saving task:', error);
     }

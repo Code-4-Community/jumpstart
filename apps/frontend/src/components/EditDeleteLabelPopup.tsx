@@ -9,7 +9,7 @@ import { toHex } from './AddLabelPopup';
 
 interface EditDeleteLabelPopupProps {
   onClose: () => void;
-  onLabelsChanged?: () => void;
+  onLabelsChanged: () => void;
 }
 
 const EditDeleteLabelPopup: React.FC<EditDeleteLabelPopupProps> = ({
@@ -42,7 +42,7 @@ const EditDeleteLabelPopup: React.FC<EditDeleteLabelPopupProps> = ({
       await apiClient.deleteLabel(selectedLabel.id);
       setLabels(labels.filter((l) => l.id !== selectedLabel.id));
       setSelectedLabel(null);
-      if (onLabelsChanged) onLabelsChanged();
+      onLabelsChanged();
     } catch (err) {
       console.error('Failed to delete label', err);
     }
@@ -57,7 +57,7 @@ const EditDeleteLabelPopup: React.FC<EditDeleteLabelPopupProps> = ({
       });
       setLabels(labels.map((l) => (l.id === updated.id ? updated : l)));
       setSelectedLabel(null);
-      if (onLabelsChanged) onLabelsChanged();
+      onLabelsChanged();
     } catch (err) {
       console.error('Failed to update label', err);
     }

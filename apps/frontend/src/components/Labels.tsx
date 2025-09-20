@@ -10,8 +10,8 @@ interface LabelsProps {
   currentTask?: Task;
   taskId?: number;
   selectedLabelIds?: number[];
-  onLabelSelectionChange?: (labelIds: number[]) => void;
-  onLabelsChanged?: () => void;
+  onLabelSelectionChange: (labelIds: number[]) => void;
+  onLabelsChanged: () => void;
 }
 
 export const Labels: React.FC<LabelsProps> = ({
@@ -66,7 +66,7 @@ export const Labels: React.FC<LabelsProps> = ({
         ? selectedLabelIds.filter((id) => id !== targetLabelId)
         : [...selectedLabelIds, targetLabelId];
 
-      onLabelSelectionChange?.(newLabelIds);
+      onLabelSelectionChange(newLabelIds);
       return;
     }
 
@@ -74,7 +74,7 @@ export const Labels: React.FC<LabelsProps> = ({
       ? selectedLabelIds.filter((id) => id !== targetLabelId)
       : [...selectedLabelIds, targetLabelId];
 
-    onLabelSelectionChange?.(newLabelIds);
+    onLabelSelectionChange(newLabelIds);
 
     const currentTaskId = currentTask?.id || taskId;
     if (!currentTaskId) return;
@@ -104,9 +104,7 @@ export const Labels: React.FC<LabelsProps> = ({
     if (!isNewTask) {
       await fetchTaskLabels();
     }
-    if (onLabelsChanged) {
-      onLabelsChanged();
-    }
+    onLabelsChanged();
   };
 
   const handleCloseSnackbar = () => {
