@@ -1,14 +1,14 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddLabelRelationToTask1754510950040 implements MigrationInterface {
-  name = 'AddLabelRelationToTask1754510950040';
+export class Init1758845062747 implements MigrationInterface {
+  name = 'Init1758845062747';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TYPE "public"."tasks_category_enum" AS ENUM('Draft', 'To Do', 'In Progress', 'Completed')`,
+      `CREATE TABLE "labels" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "color" character varying NOT NULL, CONSTRAINT "UQ_543605929e5ebe08eeeab493f60" UNIQUE ("name"), CONSTRAINT "PK_c0c4e97f76f1f3a268c7a70b925" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "labels" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "description" character varying, "color" character varying NOT NULL, CONSTRAINT "UQ_543605929e5ebe08eeeab493f60" UNIQUE ("name"), CONSTRAINT "PK_c0c4e97f76f1f3a268c7a70b925" PRIMARY KEY ("id"))`,
+      `CREATE TYPE "public"."tasks_category_enum" AS ENUM('Draft', 'To Do', 'In Progress', 'Completed')`,
     );
     await queryRunner.query(
       `CREATE TABLE "tasks" ("id" SERIAL NOT NULL, "title" character varying NOT NULL, "description" character varying, "dateCreated" TIMESTAMP NOT NULL DEFAULT now(), "dueDate" TIMESTAMP, "category" "public"."tasks_category_enum" NOT NULL DEFAULT 'Draft', CONSTRAINT "PK_8d12ff38fcc62aaba2cab748772" PRIMARY KEY ("id"))`,
@@ -45,7 +45,7 @@ export class AddLabelRelationToTask1754510950040 implements MigrationInterface {
     );
     await queryRunner.query(`DROP TABLE "tasks_labels_labels"`);
     await queryRunner.query(`DROP TABLE "tasks"`);
-    await queryRunner.query(`DROP TABLE "labels"`);
     await queryRunner.query(`DROP TYPE "public"."tasks_category_enum"`);
+    await queryRunner.query(`DROP TABLE "labels"`);
   }
 }
