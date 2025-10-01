@@ -181,7 +181,6 @@ export const CreateEditTask: React.FC<CreateEditTaskProps> = ({
           <div className="flex flex-row mt-8 ml-4 gap-12">
             <Labels
               currentTask={task}
-              taskId={taskId}
               selectedLabelIds={selectedLabelIds}
               onLabelSelectionChange={setSelectedLabelIds}
               onLabelsChanged={refreshSelectedLabels}

@@ -8,7 +8,6 @@ import EditDeleteLabelPopup from './EditDeleteLabelPopup';
 
 interface LabelsProps {
   currentTask?: Task;
-  taskId?: number;
   selectedLabelIds?: number[];
   onLabelSelectionChange: (labelIds: number[]) => void;
   onLabelsChanged: () => void;
@@ -16,7 +15,6 @@ interface LabelsProps {
 
 export const Labels: React.FC<LabelsProps> = ({
   currentTask,
-  taskId,
   selectedLabelIds = [],
   onLabelSelectionChange,
   onLabelsChanged,
@@ -30,7 +28,7 @@ export const Labels: React.FC<LabelsProps> = ({
     message: string;
   }>({ open: false, message: '' });
 
-  const isNewTask = !currentTask?.id && !taskId;
+  const isNewTask = !currentTask?.id;
   const currentLabelIds = selectedLabelIds || taskLabels;
 
   const fetchData = async () => {
@@ -39,45 +37,33 @@ export const Labels: React.FC<LabelsProps> = ({
   };
 
   const fetchTaskLabels = useCallback(async () => {
-    if (!currentTask?.id && !taskId) return;
+    if (!currentTask?.id) return;
     try {
-      const task = await apiClient.getTaskById(currentTask?.id || taskId!);
+      const task = await apiClient.getTaskById(currentTask?.id);
       const labelIds = task.labels?.map((label) => label.id) || [];
       setTaskLabels(labelIds);
     } catch (error) {
       console.error('Error fetching task labels:', error);
       setTaskLabels([]);
     }
-  }, [currentTask?.id, taskId]);
+  }, [currentTask?.id]);
 
   useEffect(() => {
     fetchData();
     if (!isNewTask) {
       fetchTaskLabels();
     }
-  }, [currentTask?.id, taskId, isNewTask, fetchTaskLabels]);
+  }, [currentTask?.id, isNewTask, fetchTaskLabels]);
 
   const changeCheckedState = async (
     targetLabelId: number,
     wasAlreadyChecked: boolean,
   ) => {
-    if (isNewTask) {
-      const newLabelIds = wasAlreadyChecked
-        ? selectedLabelIds.filter((id) => id !== targetLabelId)
-        : [...selectedLabelIds, targetLabelId];
-
-      onLabelSelectionChange(newLabelIds);
-      return;
-    }
-
     const newLabelIds = wasAlreadyChecked
       ? selectedLabelIds.filter((id) => id !== targetLabelId)
       : [...selectedLabelIds, targetLabelId];
 
     onLabelSelectionChange(newLabelIds);
-
-    const currentTaskId = currentTask?.id || taskId;
-    if (!currentTaskId) return;
   };
 
   const handleLabelCreated = async (newLabel?: Label | undefined) => {
