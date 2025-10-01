@@ -1,11 +1,12 @@
 import React from 'react';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
+import { TaskCategory } from '../types/types';
 
 interface TaskCardProps {
   colors: string[];
   title: string;
   dueDate?: Date;
-  category: string;
+  category: TaskCategory;
 }
 
 export const TaskCard: React.FC<TaskCardProps> = ({
@@ -28,7 +29,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
           <div className="ml-auto w-5 h-5 flex items-center justify-center">
             {dueDate &&
               Date.now() >= dueDate.getTime() &&
-              category !== 'Completed' && (
+              category !== TaskCategory.COMPLETED && (
                 <WarningAmberOutlinedIcon color="warning" fontSize="small" />
               )}
           </div>
@@ -39,7 +40,8 @@ export const TaskCard: React.FC<TaskCardProps> = ({
         <p
           className="text-xs self-end"
           style={
-            Date.now() >= dueDate.getTime() && category !== 'Completed'
+            Date.now() >= dueDate.getTime() &&
+            category !== TaskCategory.COMPLETED
               ? { color: '#FF0004' }
               : { color: '#878787' }
           }
